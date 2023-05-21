@@ -1,0 +1,13 @@
+{
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.autopep8"
+    },
+    "python.formatting.provider": "none",
+    "editor.fontSize": 11,
+    "editor.autoClosingBrackets": "languageDefined",
+    "editor.autoClosingDelete": "auto",
+    "editor.minimap.autohide": true,
+    "files.exclude": {
+        "**/.vscode": true
+    }
+}
