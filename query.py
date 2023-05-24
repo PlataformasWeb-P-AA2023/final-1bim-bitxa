@@ -9,7 +9,7 @@ def set_running_session(session):
 
 def run_all_queries():
     queries_runners = [
-        five
+        one, two, three, four, five
     ]
 
     for query in queries_runners:
