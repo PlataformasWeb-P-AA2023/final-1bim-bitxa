@@ -22,6 +22,8 @@ def load_data_into_db():
     # For each row, it checks it already exists on db
 
     for index, row in data.iterrows():
+
+        # COLLECTS PROVINCIA
         provincia = session.query(Provincia).filter_by(
             codigo=row['Código División Política Administrativa Provincia']).first()
         if not provincia:
@@ -29,6 +31,7 @@ def load_data_into_db():
                 codigo=row['Código División Política Administrativa Provincia'], nombre=row['Provincia'])
             session.add(provincia)
 
+        # COLLECTS CANTON
         canton = session.query(Canton).filter_by(
             codigo=row['Código División Política Administrativa  Cantón']).first()
         if not canton:
@@ -36,6 +39,7 @@ def load_data_into_db():
                             provincia_codigo=row['Código División Política Administrativa Provincia'])
             session.add(canton)
 
+        # COLLECTS PARROQUIA
         parroquia = session.query(Parroquia).filter_by(
             codigo=row['Código División Política Administrativa  Parroquia']).first()
         if not parroquia:
@@ -43,12 +47,14 @@ def load_data_into_db():
                                   canton_codigo=row['Código División Política Administrativa  Cantón'], provincia_codigo=row['Código División Política Administrativa Provincia'])
             session.add(parroquia)
 
+        # COLLECTS DISTRITO
         distrito = session.query(Distrito).filter_by(
             codigo=row['Código de Distrito']).first()
         if not distrito:
             distrito = Distrito(codigo=row['Código de Distrito'])
             session.add(distrito)
 
+        # COLLECTS ESTABLECIMIENTO
         establecimiento = session.query(Establecimiento).filter_by(
             codigo_amie=row['Código AMIE']).first()
         if not establecimiento:

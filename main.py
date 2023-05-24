@@ -5,11 +5,10 @@ import query
 
 if __name__ == "__main__":
     # U can comment create_sechemes() and load_data_into_db() if u dont want the data to upload again
-
     print('Creating scheme...')
-    create_schemes()
+    #create_schemes()
     print('Loading data...')
-    load_data_into_db()
+    #load_data_into_db()
     print('Running queries...')
 
     running_session = get_running_session()

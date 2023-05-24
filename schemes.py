@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Index
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 from connection import engine
 
 Base = declarative_base()
@@ -11,8 +12,11 @@ class Provincia(Base):
     codigo = Column('codigo_division_politica_provincia',
                     String(10), primary_key=True)
     nombre = Column('nombre', String(50))
-    __table_args__ = (Index('idx_provincia_codigo',
-                      'codigo_division_politica_provincia'),)
+
+    cantones = relationship("Canton", back_populates="provincia")
+
+    establecimientos = relationship(
+        "Establecimiento", back_populates="provincia")
 
 
 class Canton(Base):
@@ -23,6 +27,12 @@ class Canton(Base):
     nombre = Column('nombre', String(250))
     provincia_codigo = Column('codigo_division_politica_provincia', String(
         10), ForeignKey('provincia.codigo_division_politica_provincia'))
+
+    provincia = relationship("Provincia", back_populates="cantones")
+    parroquias = relationship("Parroquia", back_populates="canton")
+
+    establecimientos = relationship(
+        "Establecimiento", back_populates="canton")
 
 
 class Parroquia(Base):
@@ -36,12 +46,17 @@ class Parroquia(Base):
     provincia_codigo = Column('codigo_division_politica_provincia', String(
         10), ForeignKey('provincia.codigo_division_politica_provincia'))
 
+    canton = relationship("Canton", back_populates="parroquias")
+
+    establecimientos = relationship(
+        "Establecimiento", back_populates="parroquia")
+
 
 class Distrito(Base):
     __tablename__ = 'distrito'
-
     codigo = Column('codigo_distrito', String(10), primary_key=True)
-    __table_args__ = (Index('idx_distrito_codigo', 'codigo_distrito'),)
+    establecimientos = relationship(
+        "Establecimiento", back_populates="distrito")
 
 
 class Establecimiento(Base):
@@ -65,6 +80,11 @@ class Establecimiento(Base):
     acceso = Column('acceso', String(50))
     numero_estudiantes = Column('numero_estudiantes', Integer)
     numero_docentes = Column('numero_docentes', Integer)
+
+    provincia = relationship("Provincia", back_populates="establecimientos")
+    canton = relationship("Canton", back_populates="establecimientos")
+    parroquia = relationship("Parroquia", back_populates="establecimientos")
+    distrito = relationship("Distrito", back_populates="establecimientos")
 
 
 def create_schemes():
