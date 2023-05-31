@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Index
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from connection import engine
@@ -15,9 +15,6 @@ class Provincia(Base):
 
     cantones = relationship("Canton", back_populates="provincia")
 
-    establecimientos = relationship(
-        "Establecimiento", back_populates="provincia")
-
 
 class Canton(Base):
     __tablename__ = 'canton'
@@ -31,9 +28,6 @@ class Canton(Base):
     provincia = relationship("Provincia", back_populates="cantones")
     parroquias = relationship("Parroquia", back_populates="canton")
 
-    establecimientos = relationship(
-        "Establecimiento", back_populates="canton")
-
 
 class Parroquia(Base):
     __tablename__ = 'parroquia'
@@ -43,11 +37,8 @@ class Parroquia(Base):
     nombre = Column('nombre', String(250))
     canton_codigo = Column('codigo_division_politica_canton', String(
         10), ForeignKey('canton.codigo_division_politica_canton'))
-    provincia_codigo = Column('codigo_division_politica_provincia', String(
-        10), ForeignKey('provincia.codigo_division_politica_provincia'))
 
     canton = relationship("Canton", back_populates="parroquias")
-
     establecimientos = relationship(
         "Establecimiento", back_populates="parroquia")
 
@@ -65,10 +56,6 @@ class Establecimiento(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     codigo_amie = Column('codigo_amie', String(10))
     nombre = Column('nombre', String(250))
-    provincia_codigo = Column('codigo_division_politica_provincia', String(
-        10), ForeignKey('provincia.codigo_division_politica_provincia'))
-    canton_codigo = Column('codigo_division_politica_canton', String(
-        10), ForeignKey('canton.codigo_division_politica_canton'))
     parroquia_codigo = Column('codigo_division_politica_parroquia', String(
         10), ForeignKey('parroquia.codigo_division_politica_parroquia'))
     codigo_distrito = Column('codigo_distrito', String(
@@ -81,8 +68,6 @@ class Establecimiento(Base):
     numero_estudiantes = Column('numero_estudiantes', Integer)
     numero_docentes = Column('numero_docentes', Integer)
 
-    provincia = relationship("Provincia", back_populates="establecimientos")
-    canton = relationship("Canton", back_populates="establecimientos")
     parroquia = relationship("Parroquia", back_populates="establecimientos")
     distrito = relationship("Distrito", back_populates="establecimientos")
 
